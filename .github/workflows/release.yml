@@ -34,12 +34,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Docker Buildx
+        if: steps.semantic_release.outputs.new_release_published == 'true'
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
 
       - name: Set up QEMU
+        if: steps.semantic_release.outputs.new_release_published == 'true'
         uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4
 
       - name: Login to GitHub Container Registry
+        if: steps.semantic_release.outputs.new_release_published == 'true'
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
         with:
           registry: ghcr.io
@@ -48,6 +51,7 @@ jobs:
 
       - name: Extract metadata for Docker build
         id: metadata
+        if: steps.semantic_release.outputs.new_release_published == 'true'
         uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf # v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -55,6 +59,7 @@ jobs:
             type=semver,pattern={{version}},value=${{steps.semantic_release.outputs.new_release_version}}
 
       - name: Build for development
+        if: steps.semantic_release.outputs.new_release_published == 'true'
         uses: docker/bake-action@a66e1c87e2eca0503c343edf1d208c716d54b8a8 # v7.1.0
         with:
           files: |
