@@ -2,7 +2,7 @@
 ARG PYTHON_VERSION=python:3.12
 
 #####################################################################################
-# Python Base
+# Python Base image
 # hadolint ignore=DL3006
 FROM ${PYTHON_VERSION}-alpine AS base
 
